@@ -7,7 +7,7 @@ web applications.
 
 ### Deploy scripts
 
-- [ ] Vue [View scripts]()
+- [x] Vue [View scripts](https://github.com/bangsite/deploy-vps-github-actions/tree/main/vue3)
 - [ ] Nuxtjs [View scripts]()
 - [ ] React [View scripts]()
 - [ ] Nextjs [View scripts]()
@@ -15,9 +15,6 @@ web applications.
 ### System and Environment Preparation
 
 #### Server Setup
-
-Prepare your VPS with the following:
-
 - Operating System: Ubuntu 20.04+ or CentOS 7+ recommended.
 - Web Server: Install and enable Nginx.
 
@@ -60,7 +57,33 @@ npm install -g pm2
 }  
 
 ```
+### Deployment Workflow Overview
 
+#### Setting Up GitHub Actions: 
+
+The deploy.yml workflow file should include the following steps:
+- Clone the repository from the specified branch (default: main).
+- Install dependencies and build the project.
+- Transfer files to the VPS via SSH.
+- Restart the application using PM2.
+  
+#### Nginx Configuration: 
+- Create or update the Nginx configuration file (/etc/nginx/sites-available/project.conf) for your project.
+- Enable and restart Nginx:
+  
+```bash
+sudo ln -s /etc/nginx/sites-available/project.conf /etc/nginx/sites-enabled/  
+sudo nginx -t  
+sudo systemctl restart nginx  
+
+```
+#### SSL Setup
+Install SSL using Certbot:
+```bash
+sudo snap install certbot --classic  
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com  
+
+```
 ### Contributions
 
 Contributions to this project are welcome. Feel free to propose improvements or report issues via GitHub issues.
